@@ -1,0 +1,140 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{stackengine}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{fixltx2e}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{stmaryrd}
+\usepackage{tabu}
+
+\geometry{left = 0.5in, right = 0.5in}
+\begin{document}
+
+Pablo Acuna
+
+CSCI 4020
+
+Anshelevich
+
+{\centering\ Computer Algorithms Homework 8 \par}
+
+24. Let G = (V, E) be a bipartite graph; suppose its nodes
+are partitioned into sets X and Y so that each edge has one end
+in X and the other in Y. We define an (a, b)-skeleton of G to be
+a set of edges $E'$ $\subseteq$ E so that at most a nodes in X are
+incident to an edge in $E'$, and at least b nodes in Y are incident
+to an edge in $E'$.
+
+Show that, given a bipartite graph G and numbers a and b,
+it is NP-complete to decide whether G has an (a, b)-skeleton. \newline
+
+\textbf{NP:} Given a bipartite graph, set of edges $E'$, and a
+(a,b)-skeleton you can go through each edge in $E'$ and place
+nodes in two sets such that $X'$ $\subseteq$ X and $Y'$
+$\subseteq$ Y.  If $|X'|$ $\leq$ a and $|Y'|$ $\geq$ b then
+G has a valid (a,b)-skeleton. \newline
+
+\textbf{Set Cover $\leq_{p}$ (a,b)-skeleton:} Given the parameters of set cover;
+$S_1, S_2, ..., S_m$, set U of n elements.  We define a bipartite graph where the nodes
+in X correspond to the sets $S_1, S_2, ..., S_m$, and the nodes in Y be the elements in U.
+We can create an edge between sets and elements if the set has that element
+in it.  We set a = k and b = n.  Put into (a,b)-skeleton blackbox, if yes then
+we have a set cover. \newline
+
+
+\textbf{Proof:} If G has a (a,b)-skeleton $E'$, then the k nodes in X are incident
+to the edges in $E'$ correspond to k sets which have all the elements.  Therefore we have a set cover.
+If there is a set cover of size k, then taking $E'$ to be the set of all edges incident to the corresponding set nodes gives you
+an (a,b)-skeleton.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\clearpage
+
+Pablo Acuna
+
+CSCI 4020
+
+Anshelevich
+
+{\centering\ Computer Algorithms Homework 8 \par}
+
+26. You and a friend have been trekking through various
+far-off parts of the world and have accumulated a big pile
+of souvenirs. At the time you weren’t really thinking about
+which of these you were planning to keep and which your friend
+was going to keep, but now the time has come to divide
+everything up.
+
+Here’s a way you could go about doing this. Suppose there
+are n objects, labeled 1, 2, ..., n, and object i
+has an agreed-upon value $x_i$. (We could think of this,
+for example, as a monetary resale value; the case in which
+you and your friend don’t agree on the value is something we
+won’t pursue here.) One reasonable way to divide things would
+be to look for a partition of the objects into two sets, so
+that the total value of the objects in each set is the same.
+
+This suggests solving the following Number Partitioning
+Problem. You are given positive integers $x_1$, ..., $x_n$;
+you want to decide whether the numbers can be partitioned
+into two sets $S_1$ and $S_2$ with the same sum:
+
+$$\sum_{x_i \in S_1} x_i  =  \sum_{x_j \in S_2} x_{j} $$
+
+Show that Number Partitioning is NP-complete. \newline
+
+\textbf{NP:} Given two sets $S_1$ and $S_2$ you can find the
+sum of all the objects values in each set, if the sums are
+equal then there is a number partitioning. \newline
+
+\textbf{Subset Sum $\leq_{p}$ Number Partitioning:}  Given the parameters
+for subset sum (W = $\{$$w_1$, $w_2$, ..., $w_n$$\}$, $\bar{W}$) we can make each weight
+into a value for an object and we double the list.  Now we make 2$\bar{W}$ as
+a value for an object.  Our list of values should look as follows,
+X = $\{$$w_1$, $w_1$, $w_2$, $w_2$, ..., $w_n$, $w_n$, 2$\bar{W}$$\}$.  The construction
+of this list is 2n +1 which is polynomial.  With this
+list we can input it into the Number Partitioning blackbox.  If there is
+a number partitioning, then there is a subset sum. \newline
+
+\textbf{Proof:} If there is a subset sum, then there is a $W'$ $\subseteq$ W where...
+
+ $$ \sum_{w_i \in W'} w_i  =  \bar{W} $$
+
+ and using the construction we used for the reduction we can always make two sets
+ $S_1$ and $S_2$ such that...
+
+ $$ \sum_{w_i \in W'} w_i + \sum_{w_i \in W'} w_i + \sum_{w_j \notin W'} w_j = 2\bar{W} + \sum_{w_j \notin W'} w_j $$
+
+where the left hand side objects are in $S_1$ and the right is $S_2$.  A similar argument
+can be made for the other direction in that if there is a number partitioning, using the summation above we
+see that there is a subset sum of size $\bar{W}$
+
+
+
+
+
+\end{document}

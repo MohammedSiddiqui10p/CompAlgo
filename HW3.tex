@@ -1,0 +1,127 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{stackengine}
+\usepackage{amsmath}
+\usepackage{ textcomp }
+\usepackage{ amssymb }
+\usepackage{fixltx2e}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{tabu}
+\geometry{left = 0.5in, right = 0.5in}
+\begin{document}
+Pablo Acuna
+
+CSCI 4020
+
+Anshelevich
+
+{\centering\ Computer Algorithms Homework 3 \par}
+
+
+
+6.
+
+\indent \indent a. Give an efficient algorithm to find a partition of a
+set of words W into valid lines, so that the sum of the squares of the
+slacks of all lines (including the last line) is minimized. \newline
+
+\textbf{Subproblems}: OPT[j] = the optimal solution on the set of words from $w_{1}$, ...
+$w_{j}$ such that the sum of the squares of the slacks are minimized.
+
+\textbf{Define}: $S_{i,j}$ to be the slack between $w_{i}$, ..., $w_{j}$ (slack summation
+defined in the question).  If $S_{i,j}$ $\textgreater$ L we will make that
+$S_{i,j}$ = $\infty$
+
+\textbf{Recursion Relation}: OPT[j] = $min_{1 \leq i \leq j}$ ($S_{i,j}^2$
++ OPT[i-1])
+
+This recursion relation works very similarily to segmented least squares in that
+we compute all subsequences and find the line from i to j that has the lowest
+cost and previous cost, that will be our optimal solution at word j.
+
+\textbf{Psuedocode}
+
+Precompute all $S_{i,j}$
+
+OPT[0] = 0
+
+for j = 1 to n
+
+\indent \indent OPT[j] = $min_{1 \leq i \leq j}$ ($S_{i,j}^2$ + OPT[i-1])
+
+return OPT[n]
+
+\textbf{Analysis} : If like in class we treat the precomputated values to take
+O($n^2$) then that will be our runtime.  That is because we have n subproblems
+that take n time to compute.  Therefore, the loop also takes O($n^2$) time and
+overall runtime is proved to be O($n^2$).
+\clearpage
+
+Pablo Acuna
+
+CSCI 4020
+
+Anshelevich
+
+{\centering\ Computer Algorithms Homework 3 \par}
+
+9.
+
+\indent \indent a. Give an example of an instance with the following
+properties.
+
+\indent \indent – There is a “surplus” of data in the sense that $x_{i}$
+$\textgreater$ $s_{i}$ for every i.
+
+\indent \indent – The optimal solution reboots the system at least twice. \newline
+
+{\centering\ \begin{tabu} to 0.8\textwidth { |X[c]|X[c]|X[c]|X[c]|X[c]| X[c]|}
+ \hline
+ Day & 1 & 2 & 3 & 4 & 5\\
+ \hline
+ $s_{i}$  & 100 & 1 & 1 & 1 & 1 \\
+\hline
+ $x_{i}$  & 101 & 101 & 101 & 101 & 101 \\
+\hline
+\end{tabu} \newline  \par}
+
+In this example, we will reboot twice in order to get the optimal solution.
+No reboot will yield 104 TB, one reboot will yield 202 TB, and two
+reboots on day 2 and 4 will yields 300 TB. \newline
+
+\indent \indent b. Give an efficient algorithm that takes values for
+$x_{1}$, $x_{2}$, . . . , $x_{n}$ and $s_{1}$, $s_{2}$, . . . , $s_{n}$ and
+returns the total number of terabytes processed by an optimal solution.
+
+\textbf{Subproblems}: OPT[i,j] = the max amount of data processed that can be done starting
+from day i through day n and the last reboot happened j days prior.
+
+\textbf{Recursion Relation}: OPT[i,j] = max(OPT[i+1,1], min($x_i$, $s_j$) + OPT[i+1,j+1])
+
+This relation is correct because we have two choices, either reboot on a day or
+process data that day.  Rebooting corresponds to OPT[i+1,1] because we go back
+to j = 1.  And processing corresponds to min($x_i$, $s_j$) + OPT[i+1,j+1]
+because we add the data processing on that day to the previous day's max.
+For this to work though we will need
+to fill up the table from i=n-1 to 1 and j=1 to n.
+
+\textbf{Psuedocode}
+
+for j = 1 to n
+
+\indent \indent OPT[n,j] = min($x_n$, $s_j$)
+
+for i = n-1 to 1
+
+\indent \indent for j = 1 to i
+
+\indent \indent \indent \indent OPT[i,j] = max(OPT[i+1,1], min($x_i$, $s_j$) + OPT[i+1,j+1])
+
+return OPT[1,1]
+
+\textbf{Analysis} : There are $n^2$ subproblems that take constant time to compute
+therefore the time complexity of the algorithm is O($n^2$).
+\end{document}
